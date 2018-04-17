@@ -111,38 +111,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         } else if (id == R.id.circlecolor_button) {
             drawableView.drawColorCircle();
         } else if (id == R.id.save_button) {
-
             saveImage();
-
-            /*drawableView.buildDrawingCache();
-            Bitmap iBitmap = drawableView.getDrawingCache();
-
-            File root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            File file = new File(root.getAbsolutePath()+"/DCIM/img.jpg");
-            try
-            {
-                file.createNewFile();
-                FileOutputStream ostream = new FileOutputStream(file);
-                iBitmap.compress(Bitmap.CompressFormat.JPEG, 90, ostream);
-                ostream.close();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            } */
-
-
-            /*StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-            StrictMode.setVmPolicy(builder.build());
-            Intent cameraIntent = new Intent(MediaStore.EXTRA_MEDIA_ALBUM);
-            File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            String pictureName = getPictureName();
-            File imageFile = new File(pictureDirectory, pictureName);
-            Uri pictureUri = Uri.fromFile(imageFile);
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri);
-            startActivityForResult(cameraIntent, CAMERA_REQUEST); */
-
-            //Toast.makeText(MainActivity.this, "Image Saved Successfully", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -153,6 +122,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
          String photo_name = "photo-"+ n +".jpg";
          drawableView.setDrawingCacheEnabled(true);
          Bitmap finalBitmap = Bitmap.createBitmap(drawableView.getDrawingCache());
+        // \\Android SDK Built for x86\Android\data\edu.apsu.csci.mandaladrawingapp\files\imageDir
          File newDir = getExternalFilesDir("imageDir");
          File myPath = new File(newDir, photo_name);
          FileOutputStream fos=null;
