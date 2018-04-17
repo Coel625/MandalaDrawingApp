@@ -28,7 +28,7 @@
         android:layout_alignParentTop="true"
         android:text="Clear" />
 
-    <edu.apsu.csci.testmandaladraw.DrawableView
+    <edu.apsu.csci.mandaladrawingapp.DrawableView
         android:id="@+id/drawable_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
