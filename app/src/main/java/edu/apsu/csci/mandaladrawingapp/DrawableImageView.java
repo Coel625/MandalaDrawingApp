@@ -66,9 +66,9 @@ public class DrawableImageView extends ImageView implements View.OnTouchListener
             case MotionEvent.ACTION_CANCEL:
                 break;
         }
-            return true;
-        }
-        final float[] getPointerCoords(MotionEvent e) {
+        return true;
+    }
+    final float[] getPointerCoords(MotionEvent e) {
         final int index = e.getActionIndex();
         final float[] coords = new float[] {e.getX(index), e.getY(index)};
         Matrix matrix = new Matrix();
@@ -76,5 +76,5 @@ public class DrawableImageView extends ImageView implements View.OnTouchListener
         matrix.postTranslate(getScrollX(), getScrollY());
         matrix.mapPoints(coords);
         return coords;
-        }
     }
+}

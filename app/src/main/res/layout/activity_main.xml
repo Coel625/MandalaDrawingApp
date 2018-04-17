@@ -43,4 +43,8 @@
 
     </LinearLayout>
 
+    <edu.apsu.csci.mandaladrawingapp.DrawableImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>
