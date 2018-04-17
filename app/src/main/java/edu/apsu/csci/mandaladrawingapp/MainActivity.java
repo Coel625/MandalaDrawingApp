@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -145,6 +146,61 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    public void saveImage() {
+        //touchImageView.setDrawingCacheEnabled(true);
+        //Bitmap bitmapImage1 = Bitmap.createBitmap(touchImageView.getDrawingCache());
+        //Bitmap finalBitmap = Bitmap.createBitmap(bitmapImage2.getWidth(), bitmapImage2.getHeight(), bitmapImage2.getConfig());
+        //Canvas canvas = new Canvas(finalBitmap);
+        //canvas.drawBitmap(bitmapImage1, new Matrix(), null);
+        //canvas.drawBitmap(bitmapImage2, new Matrix(), null);
+        // finalBitmap will contain your background and its overlay
+         Random gen = new Random();
+         int n = 10000;
+         n = gen.nextInt(n);
+         String photo_name = "photo-"+ n +".jpg";
+         drawableView.setDrawingCacheEnabled(true);
+         Bitmap finalBitmap = Bitmap.createBitmap(drawableView.getDrawingCache());
+         File newDir = getExternalFilesDir("imageDir");
+         File myPath = new File(newDir, photo_name);
+         FileOutputStream fos=null;
+        try {
+            fos=new FileOutputStream(myPath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            finalBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            Toast.makeText(getApplicationContext(), "saved " + photo_name + " to application folder", Toast.LENGTH_SHORT ).show();
+        } catch (Exception e) {
+            Log.e("SAVE", "photo failed to save");
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                Log.e("SAVE", "FOS failed to close");
+            }
+        }
+        //touchImageView.setDrawingCacheEnabled(false);
+        // Random gen = new Random();
+        //int n = 10000;
+        //n = gen.nextInt(n);
+        //String photo_name = "photo-"+ n +".jpg";
+        //File file = new File (newDir, photo_name);
+        //if (file.exists ())
+        //file.delete ();
+        /*
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+            Toast.makeText(getApplicationContext(), "saved to your folder", Toast.LENGTH_SHORT ).show();
+
+        } catch (Exception e) {
+            Log.e("SAVE","photo failed to save");
+        }*/
+
+
+    }
+
+
     private void showRadioButtonDialog() {
 
         /*final Dialog dialog = new Dialog(activity);
@@ -165,7 +221,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         dialog.show(); */
 
     }
-
+/*
     public void saveImage() {
         /*Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
@@ -190,9 +246,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         intent.setType("image/*");
         //intent.setAction(Intent.ACTION_CREATE_DOCUMENT);
         intent.setAction(Intent.ACTION_SEND);
-        startActivityForResult(Intent.createChooser(intent, "Save Picture"), SAVE_PICTURE); */
+        startActivityForResult(Intent.createChooser(intent, "Save Picture"), SAVE_PICTURE);
     }
-
+*/
     private String getPictureName() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String timestamp = sdf.format(new Date());
