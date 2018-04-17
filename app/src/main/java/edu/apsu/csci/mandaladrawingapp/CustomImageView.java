@@ -12,13 +12,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 public class CustomImageView extends ImageView {
-    Matrix matrix;
+    /*Matrix matrix;
     // We can be in one of these 3 states
     static final int NONE = 0;
     static final int DRAG = 1;
     static final int ZOOM = 2;
     int mode = NONE;
-    private boolean zoomEnable = true;
+    //private boolean zoomEnable = true;
     // Remember some things for zooming
     PointF last = new PointF();
     PointF start = new PointF();
@@ -32,23 +32,23 @@ public class CustomImageView extends ImageView {
     protected float origWidth, origHeight;
     int oldMeasuredWidth, oldMeasuredHeight;
     ScaleGestureDetector mScaleDetector;
-    Context context;
+    Context context; */
 
     public CustomImageView(Context context) {
         super(context);
-        sharedConstructing(context);
+        //sharedConstructing(context);
     }
 
-    public void setZoomEnable(boolean status) {
+   /* public void setZoomEnable(boolean status) {
         zoomEnable = status;
-    }
+    } */
 
     public CustomImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        sharedConstructing(context);
+        //sharedConstructing(context);
     }
 
-    private void sharedConstructing(Context context) {
+    /*private void sharedConstructing(Context context) {
         super.setClickable(true);
         this.context = context;
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
@@ -234,5 +234,5 @@ public class CustomImageView extends ImageView {
             setImageMatrix(matrix);
         }
         fixTrans();
-    }
+    } */
 }

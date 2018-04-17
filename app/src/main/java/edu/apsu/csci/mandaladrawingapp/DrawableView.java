@@ -9,9 +9,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Random;
 
 public class DrawableView extends View {
 
@@ -33,7 +38,7 @@ public class DrawableView extends View {
     public DrawableView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.canvasPaint = new Paint(Paint.DITHER_FLAG);
-        setupDrawing();
+        setup();
     }
     public DrawableView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -46,7 +51,7 @@ public class DrawableView extends View {
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
     }
-    private void setupDrawing() {
+    private void setup() {
         drawPath = new Path();
         drawPaint = new Paint();
         drawPaint.setColor(paintColor);
@@ -68,13 +73,49 @@ public class DrawableView extends View {
     }
 
     public void clearCanvas() {
-        drawCanvas.drawColor(Color.WHITE);
-        invalidate();
+        onSizeChanged(width, height, 0, 0);
+
+       /* try {
+            Drawable drawable = findViewById(R.drawable.ic_launcher_background);
+            Bitmap bitmap;
+
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);
+
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+            return bitmap;
+        } catch (OutOfMemoryError e) {
+            // Handle the error
+            return null;
+        } */
     }
 
-    public void otherCanvas() {
-        drawCanvas.drawColor(R.drawable.ic_launcher_background);
-        invalidate();
+    public void saveImage() {
+        Bitmap saveBitmap = canvasBitmap;
+        saveImages(saveBitmap);
+    }
+
+    private void saveImages(Bitmap finalBitmap) {
+
+        String root = Environment.getRootDirectory().toString();
+        File myDir = new File(root + "/downloads");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-"+ n +".jpg";
+        File file = new File (myDir, fname);
+        if (file.exists ()) file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
