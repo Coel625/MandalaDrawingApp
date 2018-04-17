@@ -101,6 +101,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
      String photo_name = "photo-"+ n +".jpg";
      drawableView.setDrawingCacheEnabled(true);
      Bitmap finalBitmap = Bitmap.createBitmap(drawableView.getDrawingCache());
+     // \\Android SDK Built for x86\Android\data\edu.apsu.csci.mandaladrawingapp\files\imageDir
      File newDir = getExternalFilesDir("DCIM");
      File myPath = new File(newDir, photo_name);
      FileOutputStream fos=null;
