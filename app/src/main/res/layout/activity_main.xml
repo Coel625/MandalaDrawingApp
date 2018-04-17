@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
     <Button
         android:id="@+id/load_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:text="Load" />
 
-    <edu.apsu.csci.testmandaladraw.DrawableView
-        android:id="@+id/drawable_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/load_button"
-        android:src="@drawable/ic_launcher_background" />
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Save" />
 
     <Button
         android:id="@+id/clear_button"
@@ -28,12 +28,74 @@
         android:layout_alignParentTop="true"
         android:text="Clear" />
 
+    <edu.apsu.csci.testmandaladraw.DrawableView
+        android:id="@+id/drawable_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/load_button"
+        android:layout_above="@id/rectanglecolor_button"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_launcher_background" />
+
     <Button
-        android:id="@+id/save_button"
-        android:layout_width="wrap_content"
+        android:id="@+id/linecolor_button"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="Save" />
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/linethickness_button"
+        android:text="1" />
+
+    <Button
+        android:id="@+id/linethickness_button"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/rectangle_button"
+        android:text="2" />
+
+    <Button
+        android:id="@+id/rectangle_button"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/save_button"
+        android:text="3" />
+
+    <Button
+        android:id="@+id/rectanglecolor_button"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/rectangle_button"
+        android:text="4" />
+
+    <Button
+        android:id="@+id/circle_button"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/rectanglecolor_button"
+        android:text="5" />
+
+    <Button
+        android:id="@+id/circlecolor_button"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/circle_button"
+        android:text="6" />
+
+    <RadioGroup
+
+        android:id="@+id/radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
+
+    </RadioGroup>
 
 </RelativeLayout>

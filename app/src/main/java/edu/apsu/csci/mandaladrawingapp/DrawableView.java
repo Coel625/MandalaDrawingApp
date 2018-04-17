@@ -11,6 +11,8 @@ import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,10 +30,14 @@ public class DrawableView extends ImageView {
     private boolean isEditable;
     private Path drawPath;
     private Paint drawPaint;
+    private Paint rectPaint;
+    private Paint circlePaint;
     private Paint canvasPaint;
     private Canvas drawCanvas;
     private Bitmap canvasBitmap;
-    private int paintColor = Color.RED;
+    private int paintColor = Color.BLACK;
+    private float pixels;
+    private float dpiPixels;
 
     public DrawableView(Context context) {
         super(context);
@@ -49,7 +55,7 @@ public class DrawableView extends ImageView {
         super.onSizeChanged(w, h, oldw, oldh);
         this.height = h;
         this.width = w;
-        canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        canvasBitmap = Bitmap.createBitmap(w + 1, h + 1, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
     }
     private void setup() {
@@ -62,6 +68,20 @@ public class DrawableView extends ImageView {
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
         drawPaint.setStrokeWidth(10);
+
+        rectPaint = new Paint();
+        rectPaint.setColor(paintColor);
+        rectPaint.setStyle(Paint.Style.FILL);
+
+        circlePaint = new Paint();
+        circlePaint.setColor(paintColor);
+        circlePaint.setStyle(Paint.Style.FILL);
+
+        pixels = 50;
+
+        float dpiSize = 50;
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        dpiPixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpiSize, dm);
     }
     public void setDrawingEnabled(boolean isEditable){
         this.isEditable = isEditable;
@@ -75,26 +95,38 @@ public class DrawableView extends ImageView {
 
     public void clearCanvas() {
         onSizeChanged(width, height, 0, 0);
-
-       /* try {
-            Drawable drawable = findViewById(R.drawable.ic_launcher_background);
-            Bitmap bitmap;
-
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);
-
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawable.draw(canvas);
-            return bitmap;
-        } catch (OutOfMemoryError e) {
-            // Handle the error
-            return null;
-        } */
     }
 
-    public void saveImage() {
-        Bitmap saveBitmap = canvasBitmap;
-        saveImages(saveBitmap);
+    public void blueCanvas() {
+        drawPaint.setColor(Color.BLUE);
+    }
+
+    public void thickLineCanvas() {
+        drawPaint.setStrokeWidth(50);
+    }
+
+    public void drawRect() {
+        rectPaint.setColor(Color.BLACK);
+        float offset = pixels;
+        drawCanvas.drawRect(offset, 0f, offset + dpiPixels, dpiPixels, rectPaint);
+    }
+
+    public void drawColorRect() {
+        rectPaint.setColor(Color.BLUE);
+        float offset = pixels;
+        drawCanvas.drawRect(offset, 0f, offset + dpiPixels, dpiPixels, rectPaint);
+    }
+
+    public void drawCircle() {
+        circlePaint.setColor(Color.BLACK);
+        float offset = pixels;
+        drawCanvas.drawOval(offset, dpiPixels, offset + dpiPixels, dpiPixels + dpiPixels, circlePaint);
+    }
+
+    public void drawColorCircle() {
+        circlePaint.setColor(Color.BLUE);
+        float offset = pixels;
+        drawCanvas.drawOval(offset, dpiPixels, offset + dpiPixels, dpiPixels + dpiPixels, circlePaint);
     }
 
     private void saveImages(Bitmap finalBitmap) {
