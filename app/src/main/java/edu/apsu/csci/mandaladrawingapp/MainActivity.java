@@ -147,13 +147,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     public void saveImage() {
-        //touchImageView.setDrawingCacheEnabled(true);
-        //Bitmap bitmapImage1 = Bitmap.createBitmap(touchImageView.getDrawingCache());
-        //Bitmap finalBitmap = Bitmap.createBitmap(bitmapImage2.getWidth(), bitmapImage2.getHeight(), bitmapImage2.getConfig());
-        //Canvas canvas = new Canvas(finalBitmap);
-        //canvas.drawBitmap(bitmapImage1, new Matrix(), null);
-        //canvas.drawBitmap(bitmapImage2, new Matrix(), null);
-        // finalBitmap will contain your background and its overlay
          Random gen = new Random();
          int n = 10000;
          n = gen.nextInt(n);
@@ -177,26 +170,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Log.e("SAVE", "FOS failed to close");
             }
         }
-        //touchImageView.setDrawingCacheEnabled(false);
-        // Random gen = new Random();
-        //int n = 10000;
-        //n = gen.nextInt(n);
-        //String photo_name = "photo-"+ n +".jpg";
-        //File file = new File (newDir, photo_name);
-        //if (file.exists ())
-        //file.delete ();
-        /*
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-            Toast.makeText(getApplicationContext(), "saved to your folder", Toast.LENGTH_SHORT ).show();
-
-        } catch (Exception e) {
-            Log.e("SAVE","photo failed to save");
-        }*/
-
 
     }
 
@@ -221,34 +194,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         dialog.show(); */
 
     }
-/*
-    public void saveImage() {
-        /*Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        String pictureName = getPictureName();
-        File imageFile = new File(pictureDirectory, pictureName);
-        Uri pictureUri = Uri.fromFile(imageFile);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri);
-        startActivityForResult(cameraIntent, CAMERA_REQUEST); */
 
-        //Uri selectedImageURIs = data.getData();
-        /*drawableView.buildDrawingCache();
-        Bitmap iBitmap = drawableView.getDrawingCache(); */
-
-        /*public Uri getImageUri(Context inContext, Bitmap inImage) {
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            String path = Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-            return Uri.parse(path);
-        }
-
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        //intent.setAction(Intent.ACTION_CREATE_DOCUMENT);
-        intent.setAction(Intent.ACTION_SEND);
-        startActivityForResult(Intent.createChooser(intent, "Save Picture"), SAVE_PICTURE);
-    }
-*/
     private String getPictureName() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String timestamp = sdf.format(new Date());
