@@ -1,17 +1,21 @@
 package edu.apsu.csci.mandaladrawingapp;
 
 import android.app.Activity;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Path;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -20,27 +24,30 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
     public static final int SELECT_PICTURE = 1000;
-    public static final int SAVE_PICTURE = 1500;
+    public static final int CAMERA_REQUEST = 1500;
 
     private int count = 1;
 
     private Button loadButton;
     private Button clearButton;
     private Button saveButton;
-    private CustomImageView touchImageView;
     private DrawableView drawableView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        touchImageView = (CustomImageView) findViewById(R.id.zoom_iv);
         drawableView = (DrawableView) findViewById(R.id.drawable_view);
         drawableView.setDrawingEnabled(true);
         loadButton = (Button) findViewById(R.id.load_button);
@@ -66,35 +73,60 @@ public class MainActivity extends Activity implements View.OnClickListener {
             rootLayout.addView(drawableView);
         } else if (id == R.id.save_button) {
 
-            saveImage();
-            /*Drawable drawable;
-            Bitmap bitmap;
-            String ImagePath;
-            Uri URI;
+            //saveImage();
 
-            drawable = getResources().getDrawable(R.drawable.ic_launcher_background);
+            drawableView.buildDrawingCache();
+            Bitmap iBitmap = drawableView.getDrawingCache();
 
-            bitmap = ((BitmapDrawable)drawable).getBitmap();
+            File root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            File file = new File(root.getAbsolutePath()+"/DCIM/img.jpg");
+            try
+            {
+                file.createNewFile();
+                FileOutputStream ostream = new FileOutputStream(file);
+                iBitmap.compress(Bitmap.CompressFormat.JPEG, 90, ostream);
+                ostream.close();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
 
-            ImagePath = MediaStore.Images.Media.insertImage(
-                    getContentResolver(),
-                    bitmap,
-                    "demo_image",
-                    "demo_image"
-            );
 
-            URI = Uri.parse(ImagePath);
+            /*StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+            Intent cameraIntent = new Intent(MediaStore.EXTRA_MEDIA_ALBUM);
+            File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            String pictureName = getPictureName();
+            File imageFile = new File(pictureDirectory, pictureName);
+            Uri pictureUri = Uri.fromFile(imageFile);
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST); */
 
-            Toast.makeText(MainActivity.this, "Image Saved Successfully", Toast.LENGTH_LONG).show(); */
+            Toast.makeText(MainActivity.this, "Image Saved Successfully", Toast.LENGTH_LONG).show();
         }
     }
 
     public void saveImage() {
-        Intent intent = new Intent();
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        String pictureName = getPictureName();
+        File imageFile = new File(pictureDirectory, pictureName);
+        Uri pictureUri = Uri.fromFile(imageFile);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+        /*Uri selectedImageURIs = data.getData();
         intent.setType("image/*");
-        //intent.setAction(Intent.ACTION_SEND);
         intent.setAction(Intent.ACTION_CREATE_DOCUMENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SAVE_PICTURE);
+        //intent.setAction(Intent.ACTION_CREATE_DOCUMENT);
+        startActivityForResult(Intent.createChooser(intent, "Save Picture"), SAVE_PICTURE); */
+    }
+
+    private String getPictureName() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String timestamp = sdf.format(new Date());
+        return "Plane place image" + timestamp + ".jpg";
     }
 
     @Override
@@ -103,25 +135,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_PICTURE) {
                 Uri selectedImageURI = data.getData();
-                touchImageView.setImageURI(selectedImageURI);
-            } else if (requestCode == SAVE_PICTURE) {
-                String root = Environment.getRootDirectory().toString();
-                File myDir = new File(root + "/downloads");
-                myDir.mkdirs();
-                Random generator = new Random();
-                int n = 10000;
-                n = generator.nextInt(n);
-                String fname = "Image-"+ n +".jpg";
-                File file = new File (myDir, fname);
-                if (file.exists ()) file.delete ();
-                try {
-                    FileOutputStream out = new FileOutputStream(file);
-                    out.flush();
-                    out.close();
+                drawableView.setImageURI(selectedImageURI);
+            } else if (requestCode == CAMERA_REQUEST) {
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
         }
     }

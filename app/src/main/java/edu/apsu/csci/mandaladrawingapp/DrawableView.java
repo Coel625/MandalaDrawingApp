@@ -13,12 +13,13 @@ import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Random;
 
-public class DrawableView extends View {
+public class DrawableView extends ImageView {
 
     public static final int CANVAS_DATA = 2000;
 

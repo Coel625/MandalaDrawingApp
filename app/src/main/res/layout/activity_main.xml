@@ -12,22 +12,13 @@
         android:layout_height="wrap_content"
         android:text="Load" />
 
-    <edu.apsu.csci.testmandaladraw.CustomImageView
-        android:id="@+id/zoom_iv"
+    <edu.apsu.csci.testmandaladraw.DrawableView
+        android:id="@+id/drawable_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="11dp"
+        android:layout_below="@+id/load_button"
         android:src="@drawable/ic_launcher_background" />
-
-    <edu.apsu.csci.testmandaladraw.DrawableView
-        android:id="@+id/drawable_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:src="@drawable/ic_launcher_background"
-        android:layout_below="@+id/load_button" />
 
     <Button
         android:id="@+id/clear_button"
