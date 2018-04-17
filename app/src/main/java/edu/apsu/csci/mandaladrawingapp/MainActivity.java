@@ -1,44 +1,23 @@
 package edu.apsu.csci.mandaladrawingapp;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Path;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.StrictMode;
-import android.provider.MediaStore;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -111,94 +90,35 @@ public class MainActivity extends Activity implements View.OnClickListener {
         } else if (id == R.id.circlecolor_button) {
             drawableView.drawColorCircle();
         } else if (id == R.id.save_button) {
-
             saveImage();
-
-            /*drawableView.buildDrawingCache();
-            Bitmap iBitmap = drawableView.getDrawingCache();
-
-            File root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            File file = new File(root.getAbsolutePath()+"/DCIM/img.jpg");
-            try
-            {
-                file.createNewFile();
-                FileOutputStream ostream = new FileOutputStream(file);
-                iBitmap.compress(Bitmap.CompressFormat.JPEG, 90, ostream);
-                ostream.close();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            } */
-
-
-            /*StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-            StrictMode.setVmPolicy(builder.build());
-            Intent cameraIntent = new Intent(MediaStore.EXTRA_MEDIA_ALBUM);
-            File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            String pictureName = getPictureName();
-            File imageFile = new File(pictureDirectory, pictureName);
-            Uri pictureUri = Uri.fromFile(imageFile);
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri);
-            startActivityForResult(cameraIntent, CAMERA_REQUEST); */
-
-            //Toast.makeText(MainActivity.this, "Image Saved Successfully", Toast.LENGTH_LONG).show();
         }
     }
 
     public void saveImage() {
-         Random gen = new Random();
-         int n = 10000;
-         n = gen.nextInt(n);
-         String photo_name = "photo-"+ n +".jpg";
-         drawableView.setDrawingCacheEnabled(true);
-         Bitmap finalBitmap = Bitmap.createBitmap(drawableView.getDrawingCache());
-         File newDir = getExternalFilesDir("imageDir");
-         File myPath = new File(newDir, photo_name);
-         FileOutputStream fos=null;
-        try {
+    Random gen = new Random();
+     int n = 10000;
+     n = gen.nextInt(n);
+     String photo_name = "photo-"+ n +".jpg";
+     drawableView.setDrawingCacheEnabled(true);
+     Bitmap finalBitmap = Bitmap.createBitmap(drawableView.getDrawingCache());
+     File newDir = getExternalFilesDir("DCIM");
+     File myPath = new File(newDir, photo_name);
+     FileOutputStream fos=null;
+    try {
             fos=new FileOutputStream(myPath);
             // Use the compress method on the BitMap object to write image to the OutputStream
-            finalBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    finalBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             Toast.makeText(getApplicationContext(), "saved " + photo_name + " to application folder", Toast.LENGTH_SHORT ).show();
         } catch (Exception e) {
             Log.e("SAVE", "photo failed to save");
         } finally {
             try {
-                fos.close();
-            } catch (IOException e) {
-                Log.e("SAVE", "FOS failed to close");
-            }
+                    fos.close();
+                } catch (IOException e) {
+                    Log.e("SAVE", "FOS failed to close");
+                }
         }
 
-    }
-
-
-    private void showRadioButtonDialog() {
-
-        /*final Dialog dialog = new Dialog(activity);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.activity_main);
-        List<String> stringList=new ArrayList<>();  // here is list
-        for(int i=0;i<5;i++) {
-            stringList.add("RadioButton " + (i + 1));
-        }
-        RadioGroup rg = (RadioGroup) dialog.findViewById(R.id.radio_group);
-
-        for(int i=0;i<stringList.size();i++){
-            RadioButton rb=new RadioButton(mActivity); // dynamically creating RadioButton and adding to RadioGroup.
-            rb.setText(stringList.get(i));
-            rg.addView(rb);
-        }
-
-        dialog.show(); */
-
-    }
-
-    private String getPictureName() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String timestamp = sdf.format(new Date());
-        return "Plane place image" + timestamp + ".jpg";
     }
 
     @Override
