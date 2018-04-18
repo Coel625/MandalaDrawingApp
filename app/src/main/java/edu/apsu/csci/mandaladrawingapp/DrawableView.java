@@ -105,28 +105,28 @@ public class DrawableView extends ImageView {
         drawPaint.setStrokeWidth(50);
     }
 
-    public void drawRect() {
+    public void drawRect(int x, int y, int size) {
         rectPaint.setColor(Color.BLACK);
         float offset = pixels;
-        drawCanvas.drawRect(offset, 0f, offset + dpiPixels, dpiPixels, rectPaint);
+        drawCanvas.drawRect(offset+x, y, offset + dpiPixels + x + size, dpiPixels + y + size, rectPaint);
     }
 
-    public void drawColorRect() {
+    public void drawColorRect(int x, int y, int size) {
         rectPaint.setColor(Color.BLUE);
         float offset = pixels;
-        drawCanvas.drawRect(offset, 0f, offset + dpiPixels, dpiPixels, rectPaint);
+        drawCanvas.drawRect(offset+x,y, offset + dpiPixels + x + size ,  dpiPixels +y + size, rectPaint);
     }
 
-    public void drawCircle() {
+    public void drawCircle(int x, int y, int size) {
         circlePaint.setColor(Color.BLACK);
         float offset = pixels;
-        drawCanvas.drawOval(offset, dpiPixels, offset + dpiPixels, dpiPixels + dpiPixels, circlePaint);
+        drawCanvas.drawOval(offset+x,y, offset + dpiPixels + x + size ,  dpiPixels +y + size, circlePaint);
     }
 
-    public void drawColorCircle() {
+    public void drawColorCircle(int x, int y, int size) {
         circlePaint.setColor(Color.BLUE);
         float offset = pixels;
-        drawCanvas.drawOval(offset, dpiPixels, offset + dpiPixels, dpiPixels + dpiPixels, circlePaint);
+        drawCanvas.drawOval(offset+x,y, offset + dpiPixels + x + size ,  dpiPixels +y + size, circlePaint);
     }
 
     private void saveImages(Bitmap finalBitmap) {
