@@ -8,6 +8,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.util.AttributeSet;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class DrawableView extends ImageView {
@@ -26,30 +29,40 @@ public class DrawableView extends ImageView {
     public static final int CANVAS_DATA = 2000;
 
     public int width;
-    public  int height;
-    private boolean isEditable;
+    public int height;
+    private Boolean isEditable;
     private Path drawPath;
     private Paint drawPaint;
-    private Paint rectPaint;
-    private Paint circlePaint;
+    private Paint shapePaint;
+    private Paint shapeBorderPaint;
+    int shapeWidthSize = 0;
+    int shapeHeightSize = 0;
     private Paint canvasPaint;
     private Canvas drawCanvas;
     private Bitmap canvasBitmap;
     private int paintColor = Color.BLACK;
+    private int lineThickness = 10;
     private float pixels;
     private float dpiPixels;
+    private ArrayList<Rect> rectangles = new ArrayList<Rect>();
+    private ArrayList<RectF> rectFS = new ArrayList<RectF>();
+    private int shapeInt = 0;
 
     public DrawableView(Context context) {
         super(context);
     }
+
     public DrawableView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.canvasPaint = new Paint(Paint.DITHER_FLAG);
         setup();
     }
+
     public DrawableView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setup();
     }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -58,6 +71,7 @@ public class DrawableView extends ImageView {
         canvasBitmap = Bitmap.createBitmap(w + 1, h + 1, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
     }
+
     private void setup() {
         drawPath = new Path();
         drawPaint = new Paint();
@@ -67,15 +81,16 @@ public class DrawableView extends ImageView {
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
-        drawPaint.setStrokeWidth(10);
+        drawPaint.setStrokeWidth(lineThickness);
 
-        rectPaint = new Paint();
-        rectPaint.setColor(paintColor);
-        rectPaint.setStyle(Paint.Style.FILL);
+        shapePaint = new Paint();
+        shapePaint.setColor(Color.TRANSPARENT);
+        shapePaint.setStyle(Paint.Style.FILL);
 
-        circlePaint = new Paint();
-        circlePaint.setColor(paintColor);
-        circlePaint.setStyle(Paint.Style.FILL);
+        shapeBorderPaint = new Paint();
+        shapeBorderPaint.setColor(Color.BLACK);
+        shapeBorderPaint.setStyle(Paint.Style.STROKE);
+        shapeBorderPaint.setStrokeWidth(lineThickness / 2);
 
         pixels = 50;
 
@@ -83,50 +98,76 @@ public class DrawableView extends ImageView {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         dpiPixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpiSize, dm);
     }
-    public void setDrawingEnabled(boolean isEditable){
+
+    public void setDrawingEnabled(boolean isEditable) {
         this.isEditable = isEditable;
     }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        float offset = pixels;
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         canvas.drawPath(drawPath, drawPaint);
+
+        for (Rect rect : rectangles) {
+            drawCanvas.drawRect(rect, shapePaint);
+            drawCanvas.drawRect(rect, shapeBorderPaint);
+        }
+
+        for (RectF rectF: rectFS) {
+            drawCanvas.drawOval(rectF, shapePaint);
+            drawCanvas.drawOval(rectF, shapeBorderPaint);
+        }
     }
 
     public void clearCanvas() {
         onSizeChanged(width, height, 0, 0);
+        rectangles.clear();
+        rectFS.clear();
     }
 
-    public void blueCanvas() {
-        drawPaint.setColor(Color.BLUE);
+    public void drawLineColor(int lineColor) {
+        drawPaint.setColor(lineColor);
+        shapeInt = 0;
     }
 
-    public void thickLineCanvas() {
-        drawPaint.setStrokeWidth(50);
+    public void thickLineCanvas(int thickLine) {
+        drawPaint.setStrokeWidth(lineThickness * thickLine);
+        shapeInt = 0;
     }
 
-    public void drawRect(int x, int y, int size) {
-        rectPaint.setColor(Color.BLACK);
+    public void drawRect(int rectWidthValue, int rectHeightValue) {
+        shapeWidthSize = rectWidthValue;
+        shapeHeightSize = rectHeightValue;
+        shapeInt = 0;
+        shapeInt++;
+        /*rectPaint.setColor(Color.TRANSPARENT);
         float offset = pixels;
-        drawCanvas.drawRect(offset+x, y, offset + dpiPixels + x + size, dpiPixels + y + size, rectPaint);
+        drawCanvas.drawRect(offset, topDimension, offset + rightDimension, bottomDimension, rectPaint); */
     }
 
-    public void drawColorRect(int x, int y, int size) {
-        rectPaint.setColor(Color.BLUE);
-        float offset = pixels;
-        drawCanvas.drawRect(offset+x,y, offset + dpiPixels + x + size ,  dpiPixels +y + size, rectPaint);
+    public void drawColorRect(int colorValue) {
+        rectangles.clear();
+        rectFS.clear();
+        shapePaint.setColor(colorValue);
+        shapeInt = 0;
+        shapeInt++;
     }
 
-    public void drawCircle(int x, int y, int size) {
-        circlePaint.setColor(Color.BLACK);
-        float offset = pixels;
-        drawCanvas.drawOval(offset+x,y, offset + dpiPixels + x + size ,  dpiPixels +y + size, circlePaint);
+    public void drawCircle(int circleWidthValue, int circleHeightValue) {
+        shapeWidthSize = circleWidthValue;
+        shapeHeightSize = circleHeightValue;
+        shapeInt = 0;
+        shapeInt += 2;
     }
 
-    public void drawColorCircle(int x, int y, int size) {
-        circlePaint.setColor(Color.BLUE);
-        float offset = pixels;
-        drawCanvas.drawOval(offset+x,y, offset + dpiPixels + x + size ,  dpiPixels +y + size, circlePaint);
+    public void drawColorCircle(int colorValue) {
+        rectangles.clear();
+        rectFS.clear();
+        shapePaint.setColor(colorValue);
+        shapeInt = 0;
+        shapeInt += 2;
     }
 
     private void saveImages(Bitmap finalBitmap) {
@@ -137,9 +178,9 @@ public class DrawableView extends ImageView {
         Random generator = new Random();
         int n = 10000;
         n = generator.nextInt(n);
-        String fname = "Image-"+ n +".jpg";
-        File file = new File (myDir, fname);
-        if (file.exists ()) file.delete ();
+        String fname = "Image-" + n + ".jpg";
+        File file = new File(myDir, fname);
+        if (file.exists()) file.delete();
         try {
             FileOutputStream out = new FileOutputStream(file);
             finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
@@ -153,26 +194,57 @@ public class DrawableView extends ImageView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(isEditable){
-            float touchX = event.getX();
-            float touchY = event.getY();
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    drawPath.moveTo(touchX, touchY);
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    drawPath.lineTo(touchX, touchY);
-                    break;
-                case MotionEvent.ACTION_UP:
-                    drawPath.lineTo(touchX, touchY);
-                    drawCanvas.drawPath(drawPath, drawPaint);
-                    drawPath = new Path();
-                    break;
-                default:
-                    return false;
+        float offset = pixels;
+        if (shapeInt == 0) {
+            if (isEditable) {
+                float touchX = event.getX();
+                float touchY = event.getY();
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        drawPath.moveTo(touchX, touchY);
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        drawPath.lineTo(touchX, touchY);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        drawPath.lineTo(touchX, touchY);
+                        drawCanvas.drawPath(drawPath, drawPaint);
+                        drawPath = new Path();
+                        break;
+                    default:
+                        return false;
+                }
+            } else {
+                return false;
             }
-        } else{
-            return false;
+        } else if (shapeInt == 1) {
+            if (isEditable) {
+                int xCoor = (int) event.getX();
+                int yCoor = (int) event.getY();
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        rectangles.add(new Rect((int) offset + xCoor + shapeWidthSize, yCoor, xCoor, (int) dpiPixels + yCoor + shapeHeightSize));
+                        break;
+                    default:
+                        return false;
+                }
+            } else {
+                return false;
+            }
+        } else if (shapeInt == 2) {
+            if (isEditable) {
+                float xCoor = event.getX();
+                float yCoor = event.getY();
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        rectFS.add(new RectF(offset + xCoor + shapeWidthSize, yCoor, xCoor, dpiPixels + yCoor + shapeHeightSize));
+                        break;
+                    default:
+                        return false;
+                }
+            } else {
+                return false;
+            }
         }
         invalidate();
         return true;

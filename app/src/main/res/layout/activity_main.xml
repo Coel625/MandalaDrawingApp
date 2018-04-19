@@ -28,12 +28,36 @@
         android:layout_alignParentTop="true"
         android:text="Clear" />
 
-    <edu.apsu.csci.mandaladrawingapp.DrawableView
+    <EditText
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/clear_button"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_toStartOf="@+id/title_button"
+        android:background="#ffffff"
+        android:hint="Title"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/title_button"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/clear_button"
+        android:layout_alignParentEnd="true"
+        android:text="..." />
+
+    <edu.apsu.csci.testmandaladraw.DrawableView
         android:id="@+id/drawable_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/load_button"
         android:layout_above="@id/rectanglecolor_button"
+        android:layout_below="@+id/title_button"
         android:layout_gravity="center_vertical"
         android:src="@drawable/ic_launcher_background" />
 
@@ -41,17 +65,19 @@
         android:id="@+id/linecolor_button"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorIcon"
         android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/linethickness_button"
-        android:text="1" />
+        android:text="–" />
 
     <Button
         android:id="@+id/linethickness_button"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/rectangle_button"
-        android:text="2" />
+        android:text="–" />
 
     <Button
         android:id="@+id/rectangle_button"
@@ -59,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/save_button"
-        android:text="3" />
+        android:text="▯" />
 
     <Button
         android:id="@+id/rectanglecolor_button"
@@ -67,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/rectangle_button"
-        android:text="4" />
+        android:text="▮" />
 
     <Button
         android:id="@+id/circle_button"
@@ -75,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/rectanglecolor_button"
-        android:text="5" />
+        android:text="◯" />
 
     <Button
         android:id="@+id/circlecolor_button"
@@ -83,19 +109,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/circle_button"
-        android:text="6" />
-
-    <RadioGroup
-
-        android:id="@+id/radio_group"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-
-
-        android:layout_gravity="center_vertical"
-        android:orientation="vertical">
-
-
-    </RadioGroup>
+        android:text="●" />
 
 </RelativeLayout>
