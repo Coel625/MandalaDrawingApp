@@ -2,6 +2,7 @@ package edu.apsu.csci.mandaladrawingapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.util.Log;
@@ -22,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -93,42 +96,161 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             final EditText editText = new EditText(getApplicationContext());
             layout.addView(editText);
-            String titleSize = editText.getText().toString();
-            int titleSizeInt = Integer.parseInt(titleSize);
-            titleView.setTextSize(titleSizeInt);
+
+            LinearLayout midLayout1 = new LinearLayout(getApplicationContext());
+            midLayout1.setOrientation(LinearLayout.HORIZONTAL);
+
+            final TextView titleTopView = new TextView(getApplicationContext());
+            titleTopView.setText("Text Color:");
+            midLayout1.addView(titleTopView);
+
+            final TextView textFill1 = new TextView(getApplicationContext());
+            textFill1.setWidth(130);
+            midLayout1.addView(textFill1);
+
+            final TextView titleTopView2 = new TextView(getApplicationContext());
+            titleTopView2.setText("Background Color:");
+            midLayout1.addView(titleTopView2);
+
+            layout.addView(midLayout1);
+
+            LinearLayout midLayout2 = new LinearLayout(getApplicationContext());
+            midLayout2.setOrientation(LinearLayout.HORIZONTAL);
 
             final RadioButton radioButton = new RadioButton(getApplicationContext());
             radioButton.setText("RED");
-            layout.addView(radioButton);
+            midLayout2.addView(radioButton);
+
+            final TextView textFill2 = new TextView(getApplicationContext());
+            textFill2.setWidth(200);
+            midLayout2.addView(textFill2);
 
             final RadioButton radioButton2 = new RadioButton(getApplicationContext());
-            radioButton2.setText("GREEN");
-            layout.addView(radioButton2);
+            radioButton2.setText("RED");
+            midLayout2.addView(radioButton2);
+
+            layout.addView(midLayout2);
+
+            LinearLayout midLayout3 = new LinearLayout(getApplicationContext());
+            midLayout3.setOrientation(LinearLayout.HORIZONTAL);
 
             final RadioButton radioButton3 = new RadioButton(getApplicationContext());
-            radioButton3.setText("BLUE");
-            layout.addView(radioButton3);
+            radioButton3.setText("GREEN");
+            midLayout3.addView(radioButton3);
+
+            final TextView textFill3 = new TextView(getApplicationContext());
+            textFill3.setWidth(173);
+            midLayout3.addView(textFill3);
 
             final RadioButton radioButton4 = new RadioButton(getApplicationContext());
-            radioButton4.setText("YELLOW");
-            layout.addView(radioButton4);
+            radioButton4.setText("GREEN");
+            midLayout3.addView(radioButton4);
+
+            layout.addView(midLayout3);
+
+            LinearLayout midLayout4 = new LinearLayout(getApplicationContext());
+            midLayout4.setOrientation(LinearLayout.HORIZONTAL);
 
             final RadioButton radioButton5 = new RadioButton(getApplicationContext());
-            radioButton5.setText("CYAN");
-            layout.addView(radioButton5);
+            radioButton5.setText("BLUE");
+            midLayout4.addView(radioButton5);
+
+            final TextView textFill4 = new TextView(getApplicationContext());
+            textFill4.setWidth(188);
+            midLayout4.addView(textFill4);
 
             final RadioButton radioButton6 = new RadioButton(getApplicationContext());
-            radioButton6.setText("GRAY");
-            layout.addView(radioButton6);
+            radioButton6.setText("BLUE");
+            midLayout4.addView(radioButton6);
+
+            layout.addView(midLayout4);
+
+            LinearLayout midLayout5 = new LinearLayout(getApplicationContext());
+            midLayout5.setOrientation(LinearLayout.HORIZONTAL);
 
             final RadioButton radioButton7 = new RadioButton(getApplicationContext());
-            radioButton7.setText("WHITE");
-            layout.addView(radioButton7);
+            radioButton7.setText("YELLOW");
+            midLayout5.addView(radioButton7);
+
+            final TextView textFill5 = new TextView(getApplicationContext());
+            textFill5.setWidth(158);
+            midLayout5.addView(textFill5);
 
             final RadioButton radioButton8 = new RadioButton(getApplicationContext());
-            radioButton8.setText("BLACK");
-            layout.addView(radioButton8);
-            alert.setMessage("Enter the font size for the title(in sp):");
+            radioButton8.setText("YELLOW");
+            midLayout5.addView(radioButton8);
+
+            layout.addView(midLayout5);
+
+            LinearLayout midLayout6 = new LinearLayout(getApplicationContext());
+            midLayout6.setOrientation(LinearLayout.HORIZONTAL);
+
+            final RadioButton radioButton9 = new RadioButton(getApplicationContext());
+            radioButton9.setText("CYAN");
+            midLayout6.addView(radioButton9);
+
+            final TextView textFill6 = new TextView(getApplicationContext());
+            textFill6.setWidth(180);
+            midLayout6.addView(textFill6);
+
+            final RadioButton radioButton10 = new RadioButton(getApplicationContext());
+            radioButton10.setText("CYAN");
+            midLayout6.addView(radioButton10);
+
+            layout.addView(midLayout6);
+
+            LinearLayout midLayout7 = new LinearLayout(getApplicationContext());
+            midLayout7.setOrientation(LinearLayout.HORIZONTAL);
+
+            final RadioButton radioButton11 = new RadioButton(getApplicationContext());
+            radioButton11.setText("GRAY");
+            midLayout7.addView(radioButton11);
+
+            final TextView textFill7 = new TextView(getApplicationContext());
+            textFill7.setWidth(180);
+            midLayout7.addView(textFill7);
+
+            final RadioButton radioButton12 = new RadioButton(getApplicationContext());
+            radioButton12.setText("GRAY");
+            midLayout7.addView(radioButton12);
+
+            layout.addView(midLayout7);
+
+            LinearLayout midLayout8 = new LinearLayout(getApplicationContext());
+            midLayout8.setOrientation(LinearLayout.HORIZONTAL);
+
+            final RadioButton radioButton13 = new RadioButton(getApplicationContext());
+            radioButton13.setText("WHITE");
+            midLayout8.addView(radioButton13);
+
+            final TextView textFill8 = new TextView(getApplicationContext());
+            textFill8.setWidth(168);
+            midLayout8.addView(textFill8);
+
+            final RadioButton radioButton14 = new RadioButton(getApplicationContext());
+            radioButton14.setText("WHITE");
+            midLayout8.addView(radioButton14);
+
+            layout.addView(midLayout8);
+
+            LinearLayout midLayout9 = new LinearLayout(getApplicationContext());
+            midLayout9.setOrientation(LinearLayout.HORIZONTAL);
+
+            final RadioButton radioButton15 = new RadioButton(getApplicationContext());
+            radioButton15.setText("BLACK");
+            midLayout9.addView(radioButton15);
+
+            final TextView textFill9 = new TextView(getApplicationContext());
+            textFill9.setWidth(168);
+            midLayout9.addView(textFill9);
+
+            final RadioButton radioButton16 = new RadioButton(getApplicationContext());
+            radioButton16.setText("BLACK");
+            midLayout9.addView(radioButton16);
+
+            layout.addView(midLayout9);
+
+            alert.setMessage("Enter the font size (in sp) and colors for the title:");
             alert.setTitle("Edit Title");
 
             alert.setView(layout);
@@ -138,22 +260,52 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     int colorInt = Color.BLACK;
                     if (radioButton.isChecked()) {
                         colorInt = Color.RED;
-                    } else if (radioButton2.isChecked()) {
-                        colorInt = Color.GREEN;
                     } else if (radioButton3.isChecked()) {
-                        colorInt = Color.BLUE;
-                    } else if (radioButton4.isChecked()) {
-                        colorInt = Color.YELLOW;
+                        colorInt = Color.GREEN;
                     } else if (radioButton5.isChecked()) {
-                        colorInt = Color.CYAN;
-                    } else if (radioButton6.isChecked()) {
-                        colorInt = Color.GRAY;
+                        colorInt = Color.BLUE;
                     } else if (radioButton7.isChecked()) {
+                        colorInt = Color.YELLOW;
+                    } else if (radioButton9.isChecked()) {
+                        colorInt = Color.CYAN;
+                    } else if (radioButton11.isChecked()) {
+                        colorInt = Color.GRAY;
+                    } else if (radioButton13.isChecked()) {
                         colorInt = Color.WHITE;
-                    } else if (radioButton8.isChecked()) {
+                    } else if (radioButton15.isChecked()) {
                         colorInt = Color.BLACK;
                     }
+
+                    int colorBackgroundInt = Color.WHITE;
+                    if (radioButton2.isChecked()) {
+                        colorBackgroundInt = Color.RED;
+                    } else if (radioButton4.isChecked()) {
+                        colorBackgroundInt = Color.GREEN;
+                    } else if (radioButton6.isChecked()) {
+                        colorBackgroundInt = Color.BLUE;
+                    } else if (radioButton8.isChecked()) {
+                        colorBackgroundInt = Color.YELLOW;
+                    } else if (radioButton10.isChecked()) {
+                        colorBackgroundInt = Color.CYAN;
+                    } else if (radioButton12.isChecked()) {
+                        colorBackgroundInt = Color.GRAY;
+                    } else if (radioButton14.isChecked()) {
+                        colorBackgroundInt = Color.WHITE;
+                    } else if (radioButton16.isChecked()) {
+                        colorBackgroundInt = Color.BLACK;
+                    }
                     titleView.setTextColor(colorInt);
+                    titleView.setBackgroundColor(colorBackgroundInt);
+
+                    String titleSize = editText.getText().toString();
+                    if (titleSize.equals("")) {
+                        titleSize = "30";
+                    }
+                    int titleSizeInt = Integer.parseInt(titleSize);
+                    if (titleSizeInt > 30) {
+                        titleSizeInt = 30;
+                    }
+                    titleView.setTextSize(titleSizeInt);
                 }
             });
 
@@ -252,7 +404,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             final EditText edittext = new EditText(getApplicationContext());
             edittext.setText("100");
-            alert.setMessage("Enter how thick you want the lines to be(%)");
+            alert.setMessage("Enter the thickness for your lines(%):");
             alert.setTitle("Line Thickness");
 
             alert.setView(edittext);
@@ -260,6 +412,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
             alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     String lineThickness = edittext.getText().toString();
+                    if (lineThickness.equals("")) {
+                        lineThickness = "100";
+                    }
                     int lineThicknessNumber = Integer.parseInt(lineThickness);
                     lineThicknessNumber /= 100;
                     drawableView.thickLineCanvas(lineThicknessNumber);
@@ -291,6 +446,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             /*drawableView.buildDrawingCache();
             Bitmap iBitmap = drawableView.getDrawingCache();
+            Uri uriToImage = getImageUri(getApplicationContext(), iBitmap);
+
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
+            shareIntent.setType("image/jpeg");
+            startActivity(Intent.createChooser(shareIntent, "Share images to.."));
 
             File root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
             File file = new File(root.getAbsolutePath()+"/DCIM/img.jpg");
@@ -318,6 +480,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
             startActivityForResult(cameraIntent, CAMERA_REQUEST); */
 
             //Toast.makeText(MainActivity.this, "Image Saved Successfully", Toast.LENGTH_LONG).show();
+
+            /*public Uri getImageUri(Context inContext, Bitmap inImage) {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+            return Uri.parse(path);
+            } */
         }
     }
 
@@ -341,8 +510,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         final EditText editText2 = new EditText(getApplicationContext());
         layout.addView(editText2);
 
-        alert.setMessage("Set the width and height for your future circles:");
-        alert.setTitle("Circle Size");
+        if (functionID == 1) {
+            alert.setMessage("Set the width and height for your future rectangles:");
+            alert.setTitle("Rectangle Size");
+        } else if (functionID == 3) {
+            alert.setMessage("Set the width and height for your future circles:");
+            alert.setTitle("Circle Size");
+        }
 
         alert.setView(layout);
 
@@ -410,8 +584,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         final RadioButton radioButton9 = new RadioButton(getApplicationContext());
         radioButton9.setText("NONE");
         layout.addView(radioButton9);
-        alert.setMessage("Select a color for your future rectangles:");
-        alert.setTitle("Rectangle Color");
+
+        if (functionID == 2) {
+            alert.setMessage("Select a color for your future rectangles:");
+            alert.setTitle("Rectangle Color");
+        } else if (functionID == 4) {
+            alert.setMessage("Select a color for your future circles:");
+            alert.setTitle("Circle Color");
+        }
 
         alert.setView(layout);
 
