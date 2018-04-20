@@ -11,6 +11,8 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
@@ -83,6 +85,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         rectColorButton.setOnClickListener(this);
         circleButton.setOnClickListener(this);
         circleColorButton.setOnClickListener(this);
+        if (savedInstanceState != null) {
+            Parcelable state=savedInstanceState.getParcelable("STATE_COLLECTION");
+            if (state != null) {
+                drawableView.onRestoreInstanceState(state);
+            }
+        }
     }
     @Override
     public void onClick(View v) {
@@ -441,52 +449,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             functionID = 4;
             shapeColorSetup();
         } else if (id == R.id.save_button) {
-
             saveImage();
-
-            /*drawableView.buildDrawingCache();
-            Bitmap iBitmap = drawableView.getDrawingCache();
-            Uri uriToImage = getImageUri(getApplicationContext(), iBitmap);
-
-            Intent shareIntent = new Intent();
-            shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
-            shareIntent.setType("image/jpeg");
-            startActivity(Intent.createChooser(shareIntent, "Share images to.."));
-
-            File root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            File file = new File(root.getAbsolutePath()+"/DCIM/img.jpg");
-            try
-            {
-                file.createNewFile();
-                FileOutputStream ostream = new FileOutputStream(file);
-                iBitmap.compress(Bitmap.CompressFormat.JPEG, 90, ostream);
-                ostream.close();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            } */
-
-
-            /*StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-            StrictMode.setVmPolicy(builder.build());
-            Intent cameraIntent = new Intent(MediaStore.EXTRA_MEDIA_ALBUM);
-            File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            String pictureName = getPictureName();
-            File imageFile = new File(pictureDirectory, pictureName);
-            Uri pictureUri = Uri.fromFile(imageFile);
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri);
-            startActivityForResult(cameraIntent, CAMERA_REQUEST); */
-
-            //Toast.makeText(MainActivity.this, "Image Saved Successfully", Toast.LENGTH_LONG).show();
-
-            /*public Uri getImageUri(Context inContext, Bitmap inImage) {
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-            return Uri.parse(path);
-            } */
         }
     }
 
@@ -678,4 +641,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }
     }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable("STATE_COLLECTION", drawableView.onSaveInstanceState());
+        super.onSaveInstanceState(outState);
+    }
+
 }
