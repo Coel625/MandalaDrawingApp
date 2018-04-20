@@ -62,19 +62,19 @@
         android:src="@drawable/ic_launcher_background" />
 
     <Button
-        android:id="@+id/linecolor_button"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:textColor="#FF0000"
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/linethickness_button"
-        android:text="–" />
-
-    <Button
         android:id="@+id/linethickness_button"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/linecolor_button"
+        android:text="–" />
+
+    <Button
+        android:id="@+id/linecolor_button"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:textColor="#FF0000"
         android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/rectangle_button"
         android:text="–" />
@@ -92,6 +92,7 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:textColor="#FF0000"
         android:layout_toEndOf="@+id/rectangle_button"
         android:text="▮" />
 
@@ -108,6 +109,7 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:textColor="#FF0000"
         android:layout_toEndOf="@+id/circle_button"
         android:text="●" />
 

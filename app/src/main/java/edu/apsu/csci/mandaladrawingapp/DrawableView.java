@@ -1,34 +1,22 @@
 package edu.apsu.csci.mandaladrawingapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.os.Environment;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class DrawableView extends ImageView {
-
-    public static final int CANVAS_DATA = 2000;
 
     public int width;
     public int height;
@@ -108,7 +96,6 @@ public class DrawableView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float offset = pixels;
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         canvas.drawPath(drawPath, drawPaint);
 
@@ -144,9 +131,6 @@ public class DrawableView extends ImageView {
         shapeHeightSize = rectHeightValue;
         shapeInt = 0;
         shapeInt++;
-        /*rectPaint.setColor(Color.TRANSPARENT);
-        float offset = pixels;
-        drawCanvas.drawRect(offset, topDimension, offset + rightDimension, bottomDimension, rectPaint); */
     }
 
     public void drawColorRect(int colorValue) {
@@ -170,28 +154,6 @@ public class DrawableView extends ImageView {
         shapePaint.setColor(colorValue);
         shapeInt = 0;
         shapeInt += 2;
-    }
-
-    private void saveImages(Bitmap finalBitmap) {
-
-        String root = Environment.getRootDirectory().toString();
-        File myDir = new File(root + "/downloads");
-        myDir.mkdirs();
-        Random generator = new Random();
-        int n = 10000;
-        n = generator.nextInt(n);
-        String fname = "Image-" + n + ".jpg";
-        File file = new File(myDir, fname);
-        if (file.exists()) file.delete();
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -250,64 +212,5 @@ public class DrawableView extends ImageView {
         }
         invalidate();
         return true;
-    }
-    private int stateToSave;
-
-    @Override
-    public Parcelable onSaveInstanceState() {
-        //begin boilerplate code that allows parent classes to save state
-        Parcelable superState = super.onSaveInstanceState();
-
-        SavedState ss = new SavedState(superState);
-        //end
-
-        ss.stateToSave = this.stateToSave;
-
-        return ss;
-    }
-
-    @Override
-    public void onRestoreInstanceState(Parcelable state) {
-        //begin boilerplate code so parent classes can restore state
-        if(!(state instanceof SavedState)) {
-            super.onRestoreInstanceState(state);
-            return;
-        }
-
-        SavedState ss = (SavedState)state;
-        super.onRestoreInstanceState(ss.getSuperState());
-        //end
-
-        this.stateToSave = ss.stateToSave;
-    }
-
-    static class SavedState extends BaseSavedState {
-        int stateToSave;
-
-        SavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        private SavedState(Parcel in) {
-            super(in);
-            this.stateToSave = in.readInt();
-        }
-
-        @Override
-        public void writeToParcel(Parcel out, int flags) {
-            super.writeToParcel(out, flags);
-            out.writeInt(this.stateToSave);
-        }
-
-        //required field that makes Parcelables from a Parcel
-        public static final Parcelable.Creator<SavedState> CREATOR =
-                new Parcelable.Creator<SavedState>() {
-                    public SavedState createFromParcel(Parcel in) {
-                        return new SavedState(in);
-                    }
-                    public SavedState[] newArray(int size) {
-                        return new SavedState[size];
-                    }
-                };
     }
 }
